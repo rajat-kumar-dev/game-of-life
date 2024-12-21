@@ -1,0 +1,50 @@
+#root {
+    margin: 0 auto;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.grid-container {
+    display: grid;
+    gap: 1px;
+    width: 95vw;
+    aspect-ratio: 1;
+}
+.grid-cell {
+    aspect-ratio: 1;
+    border: 0.1px solid green;
+    padding: 5px;
+    cursor: pointer;
+}
+.controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+button {
+    border: 1px solid green;
+    border-radius: 8px;
+    background: black;
+    margin: 10px;
+    color: green;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-size: 1rem;
+    padding: 10px 20px;
+}
+button:hover {
+    outline: 2px solid green;
+}
+
+.playPauseBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.worldInfo {
+    text-align: left;
+    color: green;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}

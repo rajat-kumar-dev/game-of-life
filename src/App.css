@@ -2,13 +2,15 @@
     margin: 0 auto;
     text-align: center;
     box-sizing: border-box;
+    font-family: monospace;
 }
 
 .grid-container {
     display: grid;
-    gap: 1px;
-    width: 95vw;
+    gap: 0.5px;
+    height: 80vh;
     aspect-ratio: 1;
+    margin: 10px auto 20px;
 }
 .grid-cell {
     aspect-ratio: 1;
@@ -16,35 +18,88 @@
     padding: 5px;
     cursor: pointer;
 }
-.controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 button {
     border: 1px solid green;
     border-radius: 8px;
     background: black;
-    margin: 10px;
     color: green;
     outline: none;
     cursor: pointer;
     transition: all 0.15s ease;
     font-size: 1rem;
     padding: 10px 20px;
+    font-family: monospace;
 }
 button:hover {
     outline: 2px solid green;
 }
 
-.playPauseBtn {
+.iconBtn {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+.infoBtn {
+    padding: 10px;
+}
+
 .worldInfo {
-    text-align: left;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
     color: green;
-    font-size: 1.2rem;
-    margin-bottom: 5px;
+    font-size: 1rem;
+}
+.worldInfo .data {
+    text-align: left;
+}
+.controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.border {
+    border: 1px solid red;
+}
+
+input {
+    font-size: 1rem;
+    background-color: transparent;
+    border: none;
+    color: green;
+    font-family: monospace;
+}
+input:focus,
+input:focus-visible {
+    outline: 1px solid green;
+}
+/* info ui */
+.gameInfo {
+    /* border: 1px solid red; */
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: green;
+    backdrop-filter: blur(3px);
+}
+
+.info-container {
+    border: 1.5px solid green;
+    border-radius: 10px;
+    max-width: 80vw;
+    padding: 20px;
+    background-color: black;
+    box-shadow: 0px 0px 20px 10px black;
+    text-align: left;
+}
+.info-container p {
+    font-size: 1.1rem;
+    font-weight: bold;
 }

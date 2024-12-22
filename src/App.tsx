@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import { produce } from "immer";
-import { FaPlay, FaPause } from "react-icons/fa6";
+import { FaPlay, FaPause, FaAngleRight, FaAngleLeft, FaInfo } from "react-icons/fa6";
+import Info from "./components/Info";
 
-const ROWS = 50;
-const COLS = 50;
+const ROWS = 20;
+const COLS = 20;
 
 function App() {
     const [grid, setGrid] = useState(getGrid(ROWS, COLS));
@@ -12,7 +13,8 @@ function App() {
     const [time, setTime] = useState(0);
     const [population, setPopulation] = useState(0);
     const [windowFocus, setWindowFocus] = useState(true);
-
+    const [updateInterval, setUpdateInterval] = useState(200); //200ms
+    const [showInfo, setShowInfo] = useState(false);
     function updateCellState(i: number, k: number, status: boolean) {
         if (grid[i][k] === status) return;
         setGrid((prevGrid) => {
@@ -25,9 +27,20 @@ function App() {
     function handlePlayClick() {
         setRunning(!running);
     }
+    function gotoGeneration(dir: 1 | -1) {
+        setRunning(false);
+        if (dir === 1) {
+            runSimulation(); //next generation
+        }
+        // previous generation
+    }
 
     function toggleCellState(i: number, k: number) {
         updateCellState(i, k, !grid[i][k]);
+    }
+
+    function toggleShowInfo() {
+        setShowInfo((prev) => !prev);
     }
 
     function runSimulation() {
@@ -72,13 +85,13 @@ function App() {
     useEffect(() => {
         let intervalID: number | null = null;
         if (running && windowFocus) {
-            intervalID = setInterval(runSimulation, 500);
+            intervalID = setInterval(runSimulation, updateInterval);
         }
 
         return () => {
             if (intervalID) clearInterval(intervalID);
         };
-    }, [running, windowFocus]);
+    }, [running, windowFocus, updateInterval]);
 
     useEffect(() => {
         const pop = grid.flat().filter((cell) => cell).length;
@@ -103,9 +116,44 @@ function App() {
     return (
         <>
             <div className="worldInfo">
-                time: {time}
-                <br />
-                population: {population}
+                <div className="data">
+                    <h1>game of life</h1>
+                    <div>population:{population}</div>
+                    <div>time:{time}</div>
+                    <div>
+                        <label htmlFor="interval">interval(ms):</label>
+                        <input
+                            type="number"
+                            name="interval"
+                            id="interval"
+                            min={50}
+                            max={10000}
+                            placeholder="input time speed"
+                            value={updateInterval}
+                            onChange={({ target }) => setUpdateInterval(target.valueAsNumber)}
+                        />
+                    </div>
+                </div>
+                <div className="controls">
+                    <button type="button" className="iconBtn" title="button" onClick={handlePlayClick}>
+                        {running ? <FaPause /> : <FaPlay />}
+                    </button>
+                    <button type="button" className="iconBtn" title="button" onClick={() => gotoGeneration(-1)}>
+                        <FaAngleLeft />
+                    </button>
+                    <button type="button" className="iconBtn" title="button" onClick={() => gotoGeneration(1)}>
+                        <FaAngleRight />
+                    </button>
+                    <button type="button" className="" title="button" onClick={resetGrid}>
+                        Reset
+                    </button>
+                    <button type="button" className="" title="button" onClick={getRandomGrid}>
+                        Random
+                    </button>
+                    <button type="button" className="infoBtn" title="infoButton" onClick={toggleShowInfo}>
+                        <FaInfo />
+                    </button>
+                </div>
             </div>
             <div
                 className="grid-container"
@@ -128,17 +176,7 @@ function App() {
                     ))
                 )}
             </div>
-            <div className="controls">
-                <button type="button" className="playPauseBtn" title="button" onClick={handlePlayClick}>
-                    {running ? <FaPause /> : <FaPlay />}
-                </button>
-                <button type="button" className="resetBtn" title="button" onClick={resetGrid}>
-                    Reset
-                </button>
-                <button type="button" className="resetBtn" title="button" onClick={getRandomGrid}>
-                    Random
-                </button>
-            </div>
+            {showInfo && <Info close={() => setShowInfo(false)} />}
         </>
     );
 }
@@ -180,8 +218,4 @@ function isInBounds(newI: number, newK: number) {
 }
 export default App;
 
-// check logic for the rules
-// next and prev cell state button either put all states in stack or make a rule to reverse the state
-// grid on off
-// time speed
-// note for ctrl hover on grid
+// prev population button either put all states in stack or make a rule to reverse the state
